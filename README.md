@@ -72,10 +72,3 @@ The app will run on `http://localhost:5000`.
 
 - Make sure the backend is running before using the frontend.
 - The backend has CORS enabled to allow requests from the frontend.
-
----
-
-## License
-
-This project is open-source and free to use.
-
