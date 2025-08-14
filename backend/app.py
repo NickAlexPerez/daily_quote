@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
-import random
 
 app = Flask(__name__)
 CORS(app)
@@ -22,11 +21,6 @@ def get_quote():
         return jsonify({"quote": quote_row['text']})
     else:
         return jsonify({"quote": "No quotes available."})
-    
-    if not quotes:
-        return jsonify({"quote": "No quotes available."})
-    random_quote = random.choice(quotes)['text']
-    return jsonify({"quote": random_quote})
 
 @app.route("/quote", methods=['POST'])
 def add_quote():
