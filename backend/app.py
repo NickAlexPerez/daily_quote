@@ -16,8 +16,13 @@ def get_db_connection():
 @app.route("/quote")
 def get_quote():
     conn = get_db_connection()
-    quotes = conn.execute('SELECT text FROM quotes').fetchall()
+    quote_row = conn.execute('SELECT text FROM quotes ORDER BY RANDOM() LIMIT 1').fetchone()
     conn.close()
+    if quote_row:
+        return jsonify({"quote": quote_row['text']})
+    else:
+        return jsonify({"quote": "No quotes available."})
+    
     if not quotes:
         return jsonify({"quote": "No quotes available."})
     random_quote = random.choice(quotes)['text']
