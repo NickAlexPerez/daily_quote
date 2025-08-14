@@ -26,8 +26,6 @@ Built with Python (Flask) backend and JavaScript frontend.
 
 ## Setup Instructions
 
-### Backend
-
 1. Navigate to the backend folder:
 
     ```bash
@@ -56,32 +54,10 @@ Built with Python (Flask) backend and JavaScript frontend.
 5. Start the Flask server:
 
     ```bash
-    python app.py
+    python run.py
     ```
 
-The backend will run on `http://localhost:5000`.
-
----
-
-### Frontend
-
-1. Navigate to the frontend folder:
-
-    ```bash
-    cd ../frontend
-    ```
-
-2. Start a simple HTTP server (Python 3):
-
-    ```bash
-    python3 -m http.server 8000
-    ```
-
-3. Open your browser and go to:
-
-    ```
-    http://localhost:8000/index.html
-    ```
+The app will run on `http://localhost:5000`.
 
 ---
 
@@ -96,10 +72,3 @@ The backend will run on `http://localhost:5000`.
 
 - Make sure the backend is running before using the frontend.
 - The backend has CORS enabled to allow requests from the frontend.
-
----
-
-## License
-
-This project is open-source and free to use.
-
