@@ -12,5 +12,21 @@
   <input type="text" id="new-quote" placeholder="Enter your quote here" style="width:300px;">
   <button onclick="addQuote()">Add Quote</button>
   <p id="add-quote-message"></p>
+
+  <button onclick="loadQuoteTable()">Refresh Quotes</button>
+  
+  <h2>Edit Quotes</h2>
+  <table id="quote-table"> 
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Quote</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Quotes will be populated here -->
+    </tbody>
+  </table>
 </body>
 </html>

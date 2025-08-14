@@ -4,7 +4,7 @@ import sqlite3
 import random
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 DATABASE = 'quotes.db'
 
@@ -41,5 +41,35 @@ def add_quote():
     conn.close()
     return jsonify({"message": "Quote added!"}), 201
 
+@app.route("/quotes")
+def get_all_quotes():
+    conn = get_db_connection()
+    quotes = conn.execute('SELECT id, text FROM quotes').fetchall()
+    conn.close()
+    return jsonify([{"id": q["id"], "text": q["text"]} for q in quotes])
+
+@app.route("/quote/<int:quote_id>", methods=['PUT'])
+def update_quote(quote_id):
+    data = request.get_json()
+    new_text = data.get('text')
+    if not new_text:
+        return jsonify({"error": "No quote provided"}), 400
+
+    conn = get_db_connection()
+    conn.execute('UPDATE quotes SET text = ? WHERE id = ?', (new_text, quote_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Quote updated!"})
+
+@app.route("/quote/<int:quote_id>", methods=['DELETE', 'OPTIONS'])
+def delete_quote(quote_id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM quotes WHERE id = ?', (quote_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Quote deleted!"})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
