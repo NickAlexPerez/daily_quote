@@ -1,0 +1,18 @@
+/* styles.css */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  margin: 2px;
+  background-color: #ddd;
+  border-radius: 16px;
+  font-size: 0.9em;
+}
+
+.tag-chip .remove-tag {
+  background: none;
+  border: none;
+  font-size: 0.9em;
+  margin-left: 4px;
+  cursor: pointer;
+}

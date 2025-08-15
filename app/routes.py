@@ -67,3 +67,58 @@ def export_quotes():
         mimetype='text/csv; charset=utf-8',
         headers={"Content-Disposition": "attachment; filename=quotes.csv"}
     )
+
+@bp.route('/tags')
+def get_all_tags():
+    tags = models.get_all_tags()
+    return jsonify([{"id": t["id"], "name": t["name"]} for t in tags])
+
+@bp.route('/tag', methods=['POST'])
+def add_tag():
+    data = request.get_json()
+    tag_name = data.get('name')
+    if not tag_name:
+        return jsonify({"error": "No tag name provided"}), 400
+
+    models.insert_tag(tag_name)
+    return jsonify({"message": "Tag added!"}), 201
+
+@bp.route('/tag/<int:tag_id>', methods=['PUT'])
+def update_tag(tag_id):
+    data = request.get_json()
+    new_name = data.get('name')
+    if not new_name:
+        return jsonify({"error": "No tag name provided"}), 400
+
+    models.update_tag(tag_id, new_name)
+    return jsonify({"message": "Tag updated!"})
+
+@bp.route('/tag/<int:tag_id>', methods=['DELETE'])
+def delete_tag(tag_id):
+    models.delete_tag(tag_id)
+    return jsonify({"message": "Tag deleted!"})
+
+@bp.route('/quote/<int:quote_id>/tags')
+def get_quote_tags(quote_id):
+    tags = models.get_quote_tags(quote_id)
+    return jsonify([{"id": t["id"], "name": t["name"]} for t in tags])
+
+@bp.route('/quote/<int:quote_id>/tag', methods=['POST'])
+def add_tag_to_quote(quote_id):
+    data = request.get_json()
+    tag_id = data.get('tag_id')
+    if not tag_id:
+        return jsonify({"error": "No tag ID provided"}), 400
+
+    models.add_tag_to_quote(quote_id, tag_id)
+    return jsonify({"message": "Tag added to quote!"}), 201
+
+@bp.route('/quote/<int:quote_id>/tag/<int:tag_id>', methods=['DELETE'])
+def remove_tag_from_quote(quote_id, tag_id):
+    models.remove_tag_from_quote(quote_id, tag_id)
+    return jsonify({"message": "Tag removed from quote!"})
+
+@bp.route('/quote/<int:quote_id>/available-tags')
+def get_available_tags(quote_id):
+    tags = models.get_available_tags_for_quote(quote_id)
+    return jsonify([{"id": t["id"], "name": t["name"]} for t in tags])
