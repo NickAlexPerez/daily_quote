@@ -1,6 +1,9 @@
 # app/routes.py
-from flask import Blueprint, jsonify, request, render_template
+import csv
+import io
+from flask import Blueprint, jsonify, request, render_template, Response
 from . import models
+
 
 bp = Blueprint('quotes', __name__)
 
@@ -44,3 +47,23 @@ def update_quote(quote_id):
 def delete_quote(quote_id):
     models.delete_quote(quote_id)
     return jsonify({"message": "Quote deleted!"})
+
+@bp.route('/export/quotes')
+def export_quotes():
+    quotes = models.get_all_quotes()
+    output = io.StringIO()
+    output.write('\ufeff')  # Write BOM for UTF-8
+
+    writer = csv.writer(output)
+    writer.writerow(['id', 'text'])
+
+    for quote in quotes:
+        writer.writerow([quote['id'], quote['text']])
+
+    output.seek(0)
+
+    return Response(
+        output,
+        mimetype='text/csv; charset=utf-8',
+        headers={"Content-Disposition": "attachment; filename=quotes.csv"}
+    )
